@@ -7,12 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Assert = NUnit.Framework.Assert;
 
-namespace CSharp.LangEx.Tests
+namespace CSharp.James.Tests
 {
+
     [TestFixture]
     [TestClass]
     public class EnumerableExTests
     {
+
         [TestMethod]
         [Test]
         public void MaybeTestWithNull()
@@ -68,5 +70,7 @@ namespace CSharp.LangEx.Tests
 
             Assert.That(filtered, Is.EquivalentTo(positives));
         }
+
     }
+
 }

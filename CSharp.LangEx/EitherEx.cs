@@ -3,96 +3,116 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CSharp.LangEx
+namespace CSharp.James
 {
+
     public static class EitherEx
     {
-        public static Either<U> SelectMany<T,U>(this Either<T> source, Func<T, Either<U>> selector)
+
+        public static Either<U> SelectMany<T, U>(this Either<T> source, Func<T, Either<U>> selector)
         {
-            if (source.HasError) return new Either<U>(source.Error);          
+            if (source.HasError) return source.Error;          
             return selector(source.Value);
         }
 
-        public static Either<V> SelectMany<T,U,V>(this Either<T> source, Func<T, Either<U>> eitherSelector, Func<T,U,V> resultSelector)
+        public static Either<V> SelectMany<T, U, V>(this Either<T> source, Func<T, Either<U>> eitherSelector, Func<T, U, V> resultSelector)
         {
-            if (source.HasError) return new Either<V>(source.Error);
+            if (source.HasError) return source.Error;
 
             var sourceUnwrapped = source.Value;
             var intermediate = eitherSelector(sourceUnwrapped);
 
-            if (intermediate.HasError) return new Either<V>(intermediate.Error);
+            if (intermediate.HasError) return intermediate.Error;
 
             var interUnwrapped = intermediate.Value;
             var result = resultSelector(sourceUnwrapped, interUnwrapped);
-            return new Either<V>(result);
+            return result;
         }
 
-        public static Either<T> Catch<T>(Func<T> f)
+        public static Either<T> Try<T>(Func<T> f)
         {
-            return f.ToEither()();
+            return f.Tries()();
         }
 
-        public static Func<Either<T>> ToEither<T>(this Func<T> f)
+        public static Func<Either<T>> Tries<T>(this Func<T> f)
         {
             return () =>
                 {
                     try
                     {
-                        return new Either<T>(f());
+                        return f();
                     }
                     catch (Exception exception)
                     {
-                        return new Either<T>(exception);
+                        return exception;
                     }
                 };
         }
 
-        public static Func<T, Either<U>> ToEither<T,U>(this Func<T,U> f)
+        public static Func<T, Either<U>> Tries<T, U>(this Func<T, U> f)
         {
             return x =>
                 {
                     try
                     {
-                        return new Either<U>(f(x));
+                        return f(x);
                     }
                     catch (Exception exception)
                     {
-                        return new Either<U>(exception);
+                        return exception;
                     }
                 };
         }
 
-        public static Func<T, U, Either<V>> ToEither<T,U,V>(this Func<T,U,V> f)
+        public static Func<T, U, Either<V>> Tries<T, U, V>(this Func<T, U, V> f)
         {
-            return (x,y) =>
-            {
-                try
+            return (x, y) =>
                 {
-                    return new Either<V>(f(x,y));
-                }
-                catch (Exception exception)
-                {
-                    return new Either<V>(exception);
-                }
-            };
+                    try
+                    {
+                        return f(x, y);
+                    }
+                    catch (Exception exception)
+                    {
+                        return exception;
+                    }
+                };
         }
 
-        public static void IfNotError<T>(this Either<T> either, Action<T> action)
+        public static void IfSuccess<T>(this Either<T> either, Action<T> action)
         {
-            if (either.HasError) return;
-            action(either.Value);
+            if (either.HasValue) action(either.Value);
         }
 
-        public static U IfNotError<T,U>(this Either<T> either, Func<T,U> func)
+        public static U IfSuccess<T, U>(this Either<T> either, Func<T, U> func)
         {
-            if (either.HasError) return default(U);
-            return func(either.Value);
+            if (either.HasValue) return func(either.Value);
+            return default(U);
         }
 
-        public static U IfNotError<T,U>(this Either<T> either, Func<T,U> func, U fallback)
+        public static U IfSuccess<T, U>(this Either<T> either, Func<T, U> func, U fallback)
         {
-            if (either.HasError) return fallback;
-            return func(either.Value);
+            if (either.HasValue) return func(either.Value);
+            return fallback;
         }
+
+        public static void IfError<T>(this Either<T> either, Action<Exception> action)
+        {
+            if (either.HasError) action(either.Error);
+        }
+
+        public static U IfError<T, U>(this Either<T> either, Func<Exception, U> func)
+        {
+            if (either.HasError) return func(either.Error);
+            return default(U);
+        }
+
+        public static U IfError<T, U>(this Either<T> either, Func<Exception, U> func, U fallback)
+        {
+            if (either.HasError) return func(either.Error);
+            return fallback;
+        }
+
     }
+
 }

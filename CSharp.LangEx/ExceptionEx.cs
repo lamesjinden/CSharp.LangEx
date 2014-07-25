@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CSharp.LangEx
+namespace CSharp.James
 {
+
     public static class ExceptionEx
     {
+
         public static T ThrowIfNull<T>(this T t) where T : class
         {
             if (t == null) throw new ArgumentNullException();
@@ -24,5 +26,7 @@ namespace CSharp.LangEx
             if (t == null) throw new ArgumentNullException(paramName, message);
             return t;
         }
+
     }
+
 }

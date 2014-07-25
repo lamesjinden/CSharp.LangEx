@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp.LangEx.Tests", "CSharp.LangEx.Tests\CSharp.LangEx.Tests.csproj", "{82B57CE0-0C9D-4C13-AC38-E8837AED3BB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp.James.Tests", "CSharp.LangEx.Tests\CSharp.James.Tests.csproj", "{82B57CE0-0C9D-4C13-AC38-E8837AED3BB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp.LangEx", "CSharp.LangEx\CSharp.LangEx.csproj", "{79BEFD8B-0DFD-4DB0-81D3-9B934657A686}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp.James", "CSharp.LangEx\CSharp.James.csproj", "{79BEFD8B-0DFD-4DB0-81D3-9B934657A686}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

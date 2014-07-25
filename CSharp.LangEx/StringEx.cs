@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CSharp.LangEx
+namespace CSharp.James
 {
+
     public static class StringEx
     {
+
         public static string Maybe(this string str)
         {
             return str ?? string.Empty;
@@ -23,5 +25,7 @@ namespace CSharp.LangEx
             if (string.IsNullOrWhiteSpace(str)) throw new ArgumentException(message, paramName);
             return str;
         }
+
     }
+
 }

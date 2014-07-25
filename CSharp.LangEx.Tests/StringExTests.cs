@@ -7,12 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Assert = NUnit.Framework.Assert;
 
-namespace CSharp.LangEx.Tests
+namespace CSharp.James.Tests
 {
+
     [TestClass]
     [TestFixture]
     public class StringExTests
     {
+
         [TestMethod]
         [Test]
         public void MaybeTestWithNull()
@@ -53,5 +55,7 @@ namespace CSharp.LangEx.Tests
             Assert.That(() => valueString.ThrowIfNullOrWhiteSpace(), Throws.Nothing);
             Assert.That(() => valueString.ThrowIfNullOrWhiteSpace(), Is.Not.Null);
         }
+
     }
+
 }
