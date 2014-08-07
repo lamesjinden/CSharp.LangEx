@@ -71,6 +71,35 @@ namespace CSharp.James.Tests
             Assert.That(filtered, Is.EquivalentTo(positives));
         }
 
+        [TestMethod]
+        [Test]
+        public void GetOrDefaultTest()
+        {
+            var dictionary = new Dictionary<string, string>();
+            
+            var maybeCount =
+                dictionary
+                    .GetOrDefault("count")
+                    .IfNotNull(new Func<string, int>(int.Parse).Comp(StructEx.Nullify));
+
+            Assert.That(maybeCount.HasValue, Is.EqualTo(false));
+        }
+
+        [TestMethod]
+        [Test]
+        public void GetOrDefaultTest2()
+        {
+            var dictionary = new Dictionary<string, string>();
+            
+            string count = dictionary.GetOrDefault("count");
+            var maybeCount =
+                count != null
+                    ? (int?)int.Parse(count)
+                    : null;
+
+            Assert.That(maybeCount.HasValue, Is.EqualTo(false));
+        }
+
     }
 
 }

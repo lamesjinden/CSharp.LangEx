@@ -73,6 +73,35 @@ namespace CSharp.James.Tests
             Assert.That(invoked, Is.True);
         }
 
+        [Test]
+        [TestMethod]
+        public void ChainTest()
+        {
+            Func<int, double> intToDouble = i => i * 1.0;
+            Func<double, string> doubleToString = d => d.ToString();
+            Func<string, int> stringToInt = s => int.Parse(s);
+
+            var result =
+                10.Apply(intToDouble)
+                  .Apply(doubleToString)
+                  .Apply(stringToInt);
+
+            Assert.That(result, Is.EqualTo(10));
+        }
+
+        [Test]
+        [TestMethod]
+        public void ComposeTest()
+        {
+            Func<int, double> intToDouble = i => i * 1.0;
+            Func<double, string> doubleToString = d => d.ToString();
+            Func<string, int> stringToInt = s => int.Parse(s);
+
+            var roundTrip = intToDouble.Comp(doubleToString).Comp(stringToInt);
+
+            Assert.That(roundTrip(10), Is.EqualTo(10));
+        }
+
     }
 
 }
