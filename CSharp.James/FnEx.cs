@@ -227,6 +227,36 @@ namespace CSharp.James
         }
 
         /// <summary>
+        /// Creates and returns a Func of <typeparamref name="U"/>
+        /// by composing <paramref name="f"/> and <paramref name="g"/>
+        /// such that the result is equivalent to f(g())
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="U"></typeparam>
+        /// <param name="g"></param>
+        /// <param name="f"></param>
+        /// <returns></returns>
+        public static Func<U> Comp<T, U>(this Func<T> g, Func<T, U> f)
+        {
+            return () => f(g());
+        }
+
+        /// <summary>
+        /// Creates and returns an Action of <typeparamref name="T"/> by 
+        /// composing <paramref name="f"/> and <paramref name="g"/>
+        /// such that result is equivalent to f(g(x))
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="U"></typeparam>
+        /// <param name="g"></param>
+        /// <param name="f"></param>
+        /// <returns></returns>
+        public static Action<T> Comp<T, U>(this Func<T, U> g, Action<U> f)
+        {
+            return t => f(g(t));
+        }
+
+        /// <summary>
         /// Creates and returns a Func of <typeparamref name="T"/> to <typeparamref name="V"/>
         /// by composing <paramref name="f"/> and <paramref name="g"/> such that the result
         /// is equivalenet to f(g(x))
@@ -383,7 +413,7 @@ namespace CSharp.James
         /// <param name="f"></param>
         /// <param name="arg"></param>
         /// <returns></returns>
-        public static Func<U, V, W> PartialL<T, U, V, W>(this Func<T, U, V, W> f, T arg)
+        public static Func<U, V, W> Partial<T, U, V, W>(this Func<T, U, V, W> f, T arg)
         {
             return (x, y) => f(arg, x, y);
         }
@@ -415,7 +445,7 @@ namespace CSharp.James
         /// <param name="arg1"></param>
         /// <param name="arg2"></param>
         /// <returns></returns>
-        public static Func<V, W> PartialL<T, U, V, W>(this Func<T, U, V, W> f, T arg1, U arg2)
+        public static Func<V, W> Partial<T, U, V, W>(this Func<T, U, V, W> f, T arg1, U arg2)
         {
             return x => f(arg1, arg2, x);
         }
@@ -435,6 +465,72 @@ namespace CSharp.James
         public static Func<T, W> PartialR<T, U, V, W>(this Func<T, U, V, W> f, U arg1, V arg2)
         {
             return x => f(x, arg1, arg2);
+        }
+
+        /// <summary>
+        /// Partially applies <paramref name="f"/> with argument <paramref name="arg"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="f"></param>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        public static Action Partial<T>(this Action<T> f, T arg)
+        {
+            return () => f(arg);
+        }
+
+        /// <summary>
+        /// Partially applies <paramref name="f"/> with argument <paramref name="arg"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="U"></typeparam>
+        /// <param name="f"></param>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        public static Action<U> Partial<T, U>(this Action<T, U> f, T arg)
+        {
+            return u => f(arg, u);
+        }
+
+        /// <summary>
+        /// Partially applies the right-most argument of <paramref name="f"/> with argument <paramref name="arg"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="U"></typeparam>
+        /// <param name="f"></param>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        public static Action<T> PartialR<T, U>(this Action<T, U> f, U arg)
+        {
+            return t => f(t, arg);
+        }
+
+        /// <summary>
+        /// Partially applies <paramref name="f"/> with argument <paramref name="arg"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="U"></typeparam>
+        /// <typeparam name="V"></typeparam>
+        /// <param name="f"></param>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        public static Action<U, V> Partial<T, U, V>(this Action<T, U, V> f, T arg)
+        {
+            return (u, v) => f(arg, u, v);
+        }
+
+        /// <summary>
+        /// Partially applies the rightmost argument of <paramref name="f"/> with argument <paramref name="arg"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="U"></typeparam>
+        /// <typeparam name="V"></typeparam>
+        /// <param name="f"></param>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        public static Action<T, U> PartialR<T, U, V>(this Action<T, U, V> f, V arg)
+        {
+            return (t, u) => f(t, u, arg);
         }
 
     }

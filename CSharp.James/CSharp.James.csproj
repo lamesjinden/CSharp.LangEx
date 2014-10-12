@@ -38,11 +38,11 @@
   <ItemGroup>
     <Compile Include="DictionaryEx.cs" />
     <Compile Include="Either.cs" />
-    <Compile Include="EitherEx.cs" />
     <Compile Include="EnumerableEx.cs" />
     <Compile Include="ExceptionEx.cs" />
     <Compile Include="FnEx.cs" />
     <Compile Include="LambdaEqualityComparer.cs" />
+    <Compile Include="Maybe.cs" />
     <Compile Include="New.cs" />
     <Compile Include="StructEx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

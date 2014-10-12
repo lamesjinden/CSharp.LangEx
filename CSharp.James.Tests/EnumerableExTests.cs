@@ -76,11 +76,12 @@ namespace CSharp.James.Tests
         public void GetOrDefaultTest()
         {
             var dictionary = new Dictionary<string, string>();
-            
+
             var maybeCount =
                 dictionary
                     .GetOrDefault("count")
-                    .IfNotNull(new Func<string, int>(int.Parse).Comp(StructEx.Nullify));
+                    .IfNotNull(new Func<string, int>(int.Parse)
+                        .Comp(new Func<int, int?>(StructEx.Nullify)));
 
             Assert.That(maybeCount.HasValue, Is.EqualTo(false));
         }

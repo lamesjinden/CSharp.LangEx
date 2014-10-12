@@ -49,6 +49,58 @@ namespace CSharp.James
             return str;
         }
 
+        /// <summary>
+        /// Invokes Bool.TryParse, returning the value as Nullable of bool
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool? ToBool(this string value)
+        {
+            bool parsed;
+            return bool.TryParse(value, out parsed)
+                ? parsed
+                : (bool?)null;
+        }
+
+        /// <summary>
+        /// Invokes Int.TryParse, returning the value as Nullable of int
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static int? ToInt(this string value)
+        {
+            int parsed;
+            return int.TryParse(value, out parsed)
+                ? parsed
+                : (int?)null;
+        }
+
+        /// <summary>
+        /// Invokes Long.TryParse, returning the value as Nullable of long
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static long? ToLong(this string value)
+        {
+            long parsed;
+            return long.TryParse(value, out parsed)
+                ? parsed
+                : (long?)null;
+        }
+
+        /// <summary>
+        /// Invokes Guid.TryParse, returning the value as Nullable of Guid
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static Guid? ToGuid(this string value)
+        {
+            Guid parsed;
+            return Guid.TryParse(value, out parsed)
+                ? parsed
+                : (Guid?)null;
+        }
+
     }
 
 }
