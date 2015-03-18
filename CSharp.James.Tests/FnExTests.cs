@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +10,11 @@ using CSharp.James;
 namespace CSharp.James.Tests
 {
 
-    [TestClass]
     [TestFixture]
     public class FnExTests
     {
 
         [Test]
-        [TestMethod]
         public void ReturnActionTest()
         {
 
@@ -30,7 +27,6 @@ namespace CSharp.James.Tests
         }
 
         [Test]
-        [TestMethod]
         public void ReturnFuncTest()
         {
             object x = new object();
@@ -42,7 +38,6 @@ namespace CSharp.James.Tests
         }
 
         [Test]
-        [TestMethod]
         public void ApplyActionTest()
         {
             const string greeting = "hello";
@@ -58,7 +53,6 @@ namespace CSharp.James.Tests
         }
 
         [Test]
-        [TestMethod]
         public void ApplyTest2()
         {
             const string greeting = "hello";
@@ -74,7 +68,6 @@ namespace CSharp.James.Tests
         }
 
         [Test]
-        [TestMethod]
         public void ChainTest()
         {
             Func<int, double> intToDouble = i => i * 1.0;
@@ -90,7 +83,6 @@ namespace CSharp.James.Tests
         }
 
         [Test]
-        [TestMethod]
         public void ComposeTest()
         {
             Func<int, double> intToDouble = i => i * 1.0;

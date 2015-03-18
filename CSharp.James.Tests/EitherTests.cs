@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +10,11 @@ using Is = NUnit.Framework.Is;
 namespace CSharp.James.Tests
 {
 
-    [TestClass]
     [TestFixture]
     public class EitherTests
     {
 
         [Test]
-        [TestMethod]
         public void TestWithFailure()
         {
             Func<string, int> parse = (str) => int.Parse(str);
@@ -29,7 +26,6 @@ namespace CSharp.James.Tests
         }
 
         [Test]
-        [TestMethod]
         public void TestWithWin()
         {
             Func<string, int> parse = (str) => int.Parse(str);

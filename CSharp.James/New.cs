@@ -27,7 +27,7 @@ namespace CSharp.James
         /// <typeparam name="T"></typeparam>
         /// <param name="items"></param>
         /// <returns></returns>
-        public static IList<T> List<T>(params T[] items)
+        public static List<T> List<T>(params T[] items)
         {
             return new List<T>(items);
         }
@@ -39,7 +39,7 @@ namespace CSharp.James
         /// <typeparam name="T"></typeparam>
         /// <param name="items"></param>
         /// <returns></returns>
-        public static ISet<T> Set<T>(params T[] items)
+        public static HashSet<T> Set<T>(params T[] items)
         {
             return new HashSet<T>(items);
         }
@@ -53,7 +53,7 @@ namespace CSharp.James
         /// <param name="comparer"></param>
         /// <param name="items"></param>
         /// <returns></returns>
-        public static ISet<T> Set<T>(IEqualityComparer<T> comparer, params T[] items)
+        public static HashSet<T> Set<T>(IEqualityComparer<T> comparer, params T[] items)
         {
             return new HashSet<T>(items, comparer);
         }

@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +10,9 @@ namespace CSharp.James.Tests
 {
 
     [TestFixture]
-    [TestClass]
     public class EnumerableExTests
     {
-
-        [TestMethod]
+       
         [Test]
         public void MaybeTestWithNull()
         {
@@ -23,7 +20,6 @@ namespace CSharp.James.Tests
             Assert.That(ints.Maybe(), Is.Not.Null);
         }
 
-        [TestMethod]
         [Test]
         public void MaybeTestWithValue()
         {
@@ -31,7 +27,6 @@ namespace CSharp.James.Tests
             Assert.That(ints.Maybe(), Is.EquivalentTo(ints));
         }
 
-        [TestMethod]
         [Test]
         public void TapTest()
         {
@@ -43,7 +38,6 @@ namespace CSharp.James.Tests
             Assert.That(tapped, Is.EquivalentTo(ints));
         }
         
-        [TestMethod]
         [Test]
         public void WhereAllTest()
         {
@@ -58,7 +52,6 @@ namespace CSharp.James.Tests
             Assert.That(filtered.First(), Is.EqualTo(2));
         }
 
-        [TestMethod]
         [Test]
         public void WhereAnyTest()
         {
@@ -71,7 +64,6 @@ namespace CSharp.James.Tests
             Assert.That(filtered, Is.EquivalentTo(positives));
         }
 
-        [TestMethod]
         [Test]
         public void GetOrDefaultTest()
         {
@@ -86,7 +78,6 @@ namespace CSharp.James.Tests
             Assert.That(maybeCount.HasValue, Is.EqualTo(false));
         }
 
-        [TestMethod]
         [Test]
         public void GetOrDefaultTest2()
         {

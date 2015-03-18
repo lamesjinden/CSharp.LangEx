@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +9,10 @@ using Assert = NUnit.Framework.Assert;
 namespace CSharp.James.Tests
 {
 
-    [TestClass]
     [TestFixture]
     public class StringExTests
     {
 
-        [TestMethod]
         [Test]
         public void MaybeTestWithNull()
         {
@@ -23,7 +20,6 @@ namespace CSharp.James.Tests
             Assert.That(nullString.Maybe(), Is.Not.Null);
         }
 
-        [TestMethod]
         [Test]
         public void MaybeTestWithValue()
         {
@@ -31,7 +27,6 @@ namespace CSharp.James.Tests
             Assert.That(valueString.Maybe(), Is.EqualTo(valueString));
         }
 
-        [TestMethod]
         [Test]
         public void ThrowIfNullOrWhiteSpaceTestWithNull()
         {
@@ -39,7 +34,6 @@ namespace CSharp.James.Tests
             Assert.That(() => nullString.ThrowIfNullOrWhiteSpace(), Throws.InstanceOf<ArgumentException>());
         }
 
-        [TestMethod]
         [Test]
         public void ThrowIfNullOrWhiteSpaceTestWithEmpty()
         {
@@ -47,7 +41,7 @@ namespace CSharp.James.Tests
             Assert.That(() => emptyString.ThrowIfNullOrWhiteSpace("message", "paramName"), Throws.InstanceOf<ArgumentException>());
         }
         
-        [TestMethod]
+        
         [Test]
         public void ThrowIfNullOrWhiteSpaceTestWithValue()
         {

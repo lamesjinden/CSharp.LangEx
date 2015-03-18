@@ -10,8 +10,10 @@ namespace CSharp.James
     /// Represents a value or a null reference
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public struct Maybe<T> where T : class
+    public struct Maybe<T> : IEquatable<Maybe<T>> where T : class
     {
+
+        public static readonly Maybe<T> None = new Maybe<T>();
 
         /// <summary>
         /// Creates an instance of Maybe over <typeparamref name="T"/>
@@ -19,7 +21,7 @@ namespace CSharp.James
         /// <param name="value"></param>
         public Maybe(T value)
         {
-            _hasValue = object.ReferenceEquals(null, value);
+            _hasValue = !object.ReferenceEquals(null, value);
             _value = value; 
         }
         
@@ -90,7 +92,61 @@ namespace CSharp.James
             return maybe.Value;
         }
 
-        public static readonly Maybe<T> None = new Maybe<T>();
+        /// <summary>
+        /// Determines equality of this instance and <paramref name="other"/>
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public bool Equals(Maybe<T> other)
+        {
+            return  HasValue && other.HasValue
+                ? EqualityComparer<T>.Default.Equals(Value, other.Value)
+                : false;
+        }
+        
+        /// <summary>
+        /// Determines equality of this instance and <paramref name="obj"/>
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(obj, null)) return false;
+            return obj is Maybe<T> && Equals((Maybe<T>)obj);            
+        }
+        
+        /// <summary>
+        /// Operator overload - mapped to Equals
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static bool operator ==(Maybe<T> left, Maybe<T> right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Operator overload - mapped to negation of Equals
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static bool operator !=(Maybe<T> left, Maybe<T> right)
+        {
+            return !left.Equals(right);
+        }
+
+        /// <summary>
+        /// Not Implemented. Throws NotSupportedException
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="System.NotSupportedException">Always</exception>
+        public override int GetHashCode()
+        {
+            //when would this make sense?
+            throw new NotSupportedException();
+        }
 
     }
 
@@ -98,27 +154,40 @@ namespace CSharp.James
     {
 
         /// <summary>
-        /// Invokes <paramref name="selector"/> with the underlying value of <paramref name="source"/>
+        /// If present, projects the value of <paramref name="maybe"/> into a new instance of Maybe.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="U"></typeparam>
-        /// <param name="source"></param>
+        /// <param name="maybe"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-        public static Maybe<U> SelectMany<T, U>(this Maybe<T> source, Func<T, Maybe<U>> selector)
-            where T : class where U : class
+        public static Maybe<U> Select<T, U>(this Maybe<T> maybe, Func<T, U> selector) 
+            where T : class 
+            where U : class
         {
-            if (!source.HasValue) return Maybe<U>.None;
-            return selector(source.Value);
+            return maybe.HasValue
+                ? selector(maybe.Value)
+                : Maybe<U>.None;
         }
 
-        //Projects each element of a sequence to an IEnumerable<T>, 
-        //flattens the resulting sequences into one sequence, 
-        //and invokes a result selector function on each element therein.
+        /// <summary>
+        /// If present, filters the value of <paramref name="maybe"/> based on a predicate.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="maybe"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public static Maybe<T> Where<T>(this Maybe<T> maybe, Func<T, bool> predicate) 
+            where T : class
+        {
+            return maybe.HasValue && predicate(maybe.Value)
+                ? maybe
+                : Maybe<T>.None;
+        }
 
         /// <summary>
-        /// Invokes <paramref name="selector"/> with the underlying value of <paramref name="source"/>,
-        /// and invokes <paramref name="resultSelector"/> on the result.
+        /// If present, projects the value of <paramref name="source"/>. 
+        /// If the result represents a value, it is projected via <paramref name="resultSelector"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="U"></typeparam>
@@ -128,7 +197,9 @@ namespace CSharp.James
         /// <param name="resultSelector"></param>
         /// <returns></returns>
         public static Maybe<V> SelectMany<T, U, V>(this Maybe<T> source, Func<T, Maybe<U>> maybeSelector, Func<T, U, V> resultSelector)
-            where T : class where U : class where V : class
+            where T : class 
+            where U : class 
+            where V : class
         {
             if (!source.HasValue) return Maybe<V>.None;
 
@@ -140,6 +211,64 @@ namespace CSharp.James
             var interUnwrapped = intermediate.Value;
             var result = resultSelector(sourceUnwrapped, interUnwrapped);
             return result;
+        }
+
+        /// <summary>
+        /// Invokes <paramref name="success"/> if maybe represents a non-null reference
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="maybe"></param>
+        /// <param name="success"></param>
+        public static void Do<T>(this Maybe<T> maybe, Action<T> success)
+        {
+            if (maybe.HasValue) success(maybe.Value);
+        }
+
+        /// <summary>
+        /// If <paramref name="maybe"/> is non-empty, invokes <paramref name="success"/>; 
+        /// otherwise invokes <paramref name="fail"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="maybe"></param>
+        /// <param name="success"></param>
+        /// <param name="fail"></param>
+        public static void Do<T>(this Maybe<T> maybe, Action<T> success, Action fail)
+        {
+            if (maybe.HasValue) success(maybe.Value);
+            else fail();
+        }
+
+        /// <summary>
+        /// If present, returns the value of <paramref name="maybe"/>; otherwise <paramref name="fallback"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="maybe"></param>
+        /// <param name="fallback"></param>
+        /// <returns></returns>
+        public static T IfNotNone<T>(this Maybe<T> maybe, T fallback)
+            where T : class
+        {
+            return maybe.HasValue
+                ? maybe.Value
+                : fallback;
+        }
+
+        /// <summary>
+        /// If <paramref name="maybe"/> is non-empty, returns the result of invoking <paramref name="project"/> with the value;
+        /// otherwise fallback
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="U"></typeparam>
+        /// <param name="maybe"></param>
+        /// <param name="project"></param>
+        /// <param name="fallback"></param>
+        /// <returns></returns>
+        public static U IfNotNone<T, U>(this Maybe<T> maybe, Func<T,U> project, U fallback)
+            where T : class
+        {
+            return maybe.HasValue
+                ? project(maybe.Value)
+                : fallback;
         }
 
     }

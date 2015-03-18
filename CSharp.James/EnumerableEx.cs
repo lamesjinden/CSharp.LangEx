@@ -21,6 +21,28 @@ namespace CSharp.James
         }
 
         /// <summary>
+        /// Returns <paramref name="source"/> or, if null, a new empty List
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static List<T> Maybe<T>(this List<T> source)
+        {
+            return source ?? new List<T>();
+        }
+
+        /// <summary>
+        /// Returns <paramref name="source"/> or, if null, a new empty array of T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static T[] Maybe<T>(this T[] source)
+        {
+            return source ?? new T[0];
+        }
+
+        /// <summary>
         /// Invokes <paramref name="action"/> on each item of <paramref name="source"/>
         /// and returns the item
         /// </summary>
