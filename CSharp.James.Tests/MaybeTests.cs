@@ -124,7 +124,7 @@ namespace CSharp.James.Tests
         public void SelectManyTest()
         {
             var maybePerson = new Maybe<Person>(new Person("first", "middle", "last"));
-            var maybeMiddle = maybePerson.SelectMany(p => p.MiddleName, (p, m) => m);
+            var maybeMiddle = maybePerson.SelectMany(p => p.MiddleName);
             Assert.That(maybeMiddle.HasValue, Is.True);
             Assert.That(maybeMiddle.Value, Is.EqualTo("middle"));
         }

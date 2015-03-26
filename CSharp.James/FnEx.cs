@@ -253,7 +253,7 @@ namespace CSharp.James
         /// <returns></returns>
         public static Action<T> Comp<T, U>(this Func<T, U> g, Action<U> f)
         {
-            return t => f(g(t));
+            return x => f(g(x));
         }
 
         /// <summary>

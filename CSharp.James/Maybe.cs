@@ -161,13 +161,32 @@ namespace CSharp.James
         /// <param name="maybe"></param>
         /// <param name="project"></param>
         /// <returns></returns>
-        public static Maybe<U> Bind<T, U>(this Maybe<T> maybe, Func<T, Maybe<U>> project)
+        public static Maybe<U> SelectMaybe<T, U>(this Maybe<T> maybe, Func<T, Maybe<U>> project)
             where T : class
             where U : class
         {
             return maybe.HasValue
                 ? project(maybe.Value)
                 : Maybe<U>.None;
+        }
+
+        /// <summary>
+        /// Monadic Bind for Maybe with an addition projection
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="U"></typeparam>
+        /// <typeparam name="V"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="maybeSelector"></param>
+        /// <param name="resultSelector"></param>
+        /// <returns></returns>
+        public static Maybe<V> SelectMaybe<T, U, V>(this Maybe<T> source, Func<T, Maybe<U>> maybeSelector, Func<T, U, V> resultSelector)
+            where T : class
+            where U : class
+            where V : class
+        {
+            var maybeInter = SelectMaybe(source, maybeSelector);
+            return SelectMaybe(maybeInter, AdaptResultSelector(resultSelector, source));
         }
 
         /// <summary>
@@ -182,7 +201,7 @@ namespace CSharp.James
             where T : class 
             where U : class
         {
-            return Bind(maybe, AdaptSelector(selector));
+            return SelectMaybe(maybe, AdaptSelector(selector));
         }
          
         /// <summary>
@@ -209,7 +228,7 @@ namespace CSharp.James
         public static Maybe<T> Where<T>(this Maybe<T> maybe, Func<T, bool> predicate) 
             where T : class
         {
-            return Bind(maybe, t => predicate(t) ? maybe : Maybe<T>.None);
+            return SelectMaybe(maybe, t => predicate(t) ? maybe : Maybe<T>.None);
         }
 
         /// <summary>
@@ -220,11 +239,12 @@ namespace CSharp.James
         /// <param name="source"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
+        /// <remarks>Alias for SelectMaybe; for completeness</remarks>
         public static Maybe<U> SelectMany<T, U>(this Maybe<T> source, Func<T, Maybe<U>> selector)
             where T : class
             where U : class 
         {
-            return Bind(source, selector);
+            return SelectMaybe(source, selector);
         }
 
         /// <summary>
@@ -238,13 +258,13 @@ namespace CSharp.James
         /// <param name="maybeSelector"></param>
         /// <param name="resultSelector"></param>
         /// <returns></returns>
+        /// <remarks>Alias for SelectMaybe with additional projection; for LINQ literal syntax</remarks>
         public static Maybe<V> SelectMany<T, U, V>(this Maybe<T> source, Func<T, Maybe<U>> maybeSelector, Func<T, U, V> resultSelector)
             where T : class 
             where U : class 
             where V : class
         {
-            var maybeInter = Bind(source, maybeSelector);
-            return Bind(maybeInter, AdaptResultSelector(resultSelector, source));
+            return SelectMaybe(source, maybeSelector, resultSelector);
         }
 
         /// <summary>

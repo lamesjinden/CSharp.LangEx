@@ -89,7 +89,10 @@ namespace CSharp.James.Tests
             Func<double, string> doubleToString = d => d.ToString();
             Func<string, int> stringToInt = s => int.Parse(s);
 
-            var roundTrip = intToDouble.Comp(doubleToString).Comp(stringToInt);
+            var roundTrip = 
+                intToDouble
+                    .Comp(doubleToString)
+                    .Comp(stringToInt);
 
             Assert.That(roundTrip(10), Is.EqualTo(10));
         }
