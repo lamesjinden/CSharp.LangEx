@@ -55,7 +55,7 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CSharp.James\PlayWell.Core.csproj">
+    <ProjectReference Include="..\PlayWell.Core\PlayWell.Core.csproj">
       <Project>{79befd8b-0dfd-4db0-81d3-9b934657a686}</Project>
       <Name>PlayWell.Core</Name>
     </ProjectReference>
