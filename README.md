@@ -1,5 +1,5 @@
-# CSharp.LangEx
-A collection of utility methods and classes.
+# PlayWell
+A collection of utilities to enable declarative programming.
 
 ##Maybe Monad
 A simple, complete implementation of the Maybe monad.
