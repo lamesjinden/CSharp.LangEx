@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>PlayWell</title>
+    <authors>James Linden</authors>
+    <owners>James Linden</owners>
+    <description>PlayWell.Core</description>
+    <projectUrl>https://github.com/lamesjinden/PlayWell</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <releaseNotes>Initial Release</releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags></tags>
+  </metadata>
+</package>
