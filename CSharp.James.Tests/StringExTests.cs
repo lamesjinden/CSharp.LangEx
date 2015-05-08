@@ -1,12 +1,8 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 
-namespace CSharp.James.Tests
+namespace PlayWell.Core.Tests
 {
 
     [TestFixture]
@@ -17,14 +13,14 @@ namespace CSharp.James.Tests
         public void MaybeTestWithNull()
         {
             string nullString = null;
-            Assert.That(nullString.Maybe(), Is.Not.Null);
+            Assert.That(nullString.OrEmpty(), Is.Not.Null);
         }
 
         [Test]
         public void MaybeTestWithValue()
         {
             string valueString = "value";
-            Assert.That(valueString.Maybe(), Is.EqualTo(valueString));
+            Assert.That(valueString.OrEmpty(), Is.EqualTo(valueString));
         }
 
         [Test]

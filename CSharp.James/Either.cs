@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace CSharp.James
+namespace PlayWell.Core
 {
 
     /// <summary>
@@ -105,14 +102,14 @@ namespace CSharp.James
         /// <param name="source"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-        public static Either<U> SelectMany<T, U>(this Either<T> source, Func<T, Either<U>> selector)
+        public static Either<U> FlatMap<T, U>(this Either<T> source, Func<T, Either<U>> selector)
         {
             if (source.HasError) return source.Error;
             return selector(source.Value);
         }
 
         /// <summary>
-        /// Whatever SelectMany does
+        /// Whatever FlatMap does
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="U"></typeparam>
@@ -121,7 +118,7 @@ namespace CSharp.James
         /// <param name="eitherSelector"></param>
         /// <param name="resultSelector"></param>
         /// <returns></returns>
-        public static Either<V> SelectMany<T, U, V>(this Either<T> source, Func<T, Either<U>> eitherSelector, Func<T, U, V> resultSelector)
+        public static Either<V> FlatMap<T, U, V>(this Either<T> source, Func<T, Either<U>> eitherSelector, Func<T, U, V> resultSelector)
         {
             if (source.HasError) return source.Error;
 

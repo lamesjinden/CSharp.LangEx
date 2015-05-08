@@ -1,13 +1,8 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
-using CSharp.James;
 
-namespace CSharp.James.Tests
+namespace PlayWell.Core.Tests
 {
 
     [TestFixture]

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace CSharp.James
+namespace PlayWell.Core
 {
 
     public static class EnumerableEx
@@ -15,7 +14,7 @@ namespace CSharp.James
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static IEnumerable<T> Maybe<T>(this IEnumerable<T> source)
+        public static IEnumerable<T> OrEmpty<T>(this IEnumerable<T> source)
         {
             return source ?? Enumerable.Empty<T>();
         }
@@ -26,9 +25,20 @@ namespace CSharp.James
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static List<T> Maybe<T>(this List<T> source)
+        public static List<T> OrEmpty<T>(this List<T> source)
         {
             return source ?? new List<T>();
+        }
+
+        /// <summary>
+        /// Returns <paramref name="source"/> or, if null, a new empty array
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static T[] OrEmpty<T>(this T[] source)
+        {
+            return source ?? new T[0];
         }
 
         /// <summary>

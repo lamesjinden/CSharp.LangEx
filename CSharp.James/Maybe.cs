@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace CSharp.James
+namespace PlayWell.Core
 {
 
     /// <summary>
@@ -21,7 +20,7 @@ namespace CSharp.James
         /// <param name="value"></param>
         public Maybe(T value)
         {
-            _hasValue = !object.ReferenceEquals(null, value);
+            _hasValue = !ReferenceEquals(null, value);
             _value = value; 
         }
         
@@ -159,14 +158,14 @@ namespace CSharp.James
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="U"></typeparam>
         /// <param name="maybe"></param>
-        /// <param name="project"></param>
+        /// <param name="projector"></param>
         /// <returns></returns>
-        public static Maybe<U> SelectMaybe<T, U>(this Maybe<T> maybe, Func<T, Maybe<U>> project)
+        public static Maybe<U> FlatMap<T, U>(this Maybe<T> maybe, Func<T, Maybe<U>> projector)
             where T : class
             where U : class
         {
             return maybe.HasValue
-                ? project(maybe.Value)
+                ? projector(maybe.Value)
                 : Maybe<U>.None;
         }
 
@@ -180,13 +179,30 @@ namespace CSharp.James
         /// <param name="maybeSelector"></param>
         /// <param name="resultSelector"></param>
         /// <returns></returns>
-        public static Maybe<V> SelectMaybe<T, U, V>(this Maybe<T> source, Func<T, Maybe<U>> maybeSelector, Func<T, U, V> resultSelector)
+        public static Maybe<V> FlatMap<T, U, V>(this Maybe<T> source, Func<T, Maybe<U>> maybeSelector, Func<T, U, V> resultSelector)
             where T : class
             where U : class
             where V : class
         {
-            var maybeInter = SelectMaybe(source, maybeSelector);
-            return SelectMaybe(maybeInter, AdaptResultSelector(resultSelector, source));
+            var maybeInter = FlatMap(source, maybeSelector);
+            return FlatMap(maybeInter, AdaptResultSelector(resultSelector, source));
+        }
+
+        /// <summary>
+        /// Adapt <paramref name="resultSelector"/> to signature of projector of SelectMaybe
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="U"></typeparam>
+        /// <typeparam name="V"></typeparam>
+        /// <param name="resultSelector"></param>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        private static Func<U, Maybe<V>> AdaptResultSelector<T, U, V>(Func<T, U, V> resultSelector, Maybe<T> source)
+            where T : class
+            where U : class
+            where V : class
+        {
+            return u => resultSelector(source.Value, u);
         }
 
         /// <summary>
@@ -201,11 +217,11 @@ namespace CSharp.James
             where T : class 
             where U : class
         {
-            return SelectMaybe(maybe, AdaptSelector(selector));
+            return FlatMap(maybe, AdaptSelector(selector));
         }
          
         /// <summary>
-        /// Adapt <paramref name="selector"/> to projector of Bind
+        /// Adapt <paramref name="selector"/> to signature of projector of SelectMaybe
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="U"></typeparam>
@@ -219,7 +235,7 @@ namespace CSharp.James
         }
 
         /// <summary>
-        /// If present, filters the value of <paramref name="maybe"/> based on a predicate.
+        /// If present, filters the value of <paramref name="maybe"/> based on a <paramref name="predicate"/>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="maybe"></param>
@@ -228,23 +244,24 @@ namespace CSharp.James
         public static Maybe<T> Where<T>(this Maybe<T> maybe, Func<T, bool> predicate) 
             where T : class
         {
-            return SelectMaybe(maybe, t => predicate(t) ? maybe : Maybe<T>.None);
+            return FlatMap(maybe, t => predicate(t) ? maybe : Maybe<T>.None);
         }
 
         /// <summary>
-        /// Alias of Bind
+        /// If present, projects the value of <paramref name="source"/>.
+        /// otherwise, Maybe.None
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="U"></typeparam>
         /// <param name="source"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-        /// <remarks>Alias for SelectMaybe; for completeness</remarks>
+        /// <remarks>Alias for FlatMap; for completeness</remarks>
         public static Maybe<U> SelectMany<T, U>(this Maybe<T> source, Func<T, Maybe<U>> selector)
             where T : class
             where U : class 
         {
-            return SelectMaybe(source, selector);
+            return FlatMap(source, selector);
         }
 
         /// <summary>
@@ -258,30 +275,13 @@ namespace CSharp.James
         /// <param name="maybeSelector"></param>
         /// <param name="resultSelector"></param>
         /// <returns></returns>
-        /// <remarks>Alias for SelectMaybe with additional projection; for LINQ literal syntax</remarks>
+        /// <remarks>Alias for FlatMap with additional projection; for LINQ literal syntax</remarks>
         public static Maybe<V> SelectMany<T, U, V>(this Maybe<T> source, Func<T, Maybe<U>> maybeSelector, Func<T, U, V> resultSelector)
             where T : class 
             where U : class 
             where V : class
         {
-            return SelectMaybe(source, maybeSelector, resultSelector);
-        }
-
-        /// <summary>
-        /// Adapt <paramref name="resultSelector"/> to signature of projector of Bind
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="U"></typeparam>
-        /// <typeparam name="V"></typeparam>
-        /// <param name="resultSelector"></param>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        private static Func<U, Maybe<V>> AdaptResultSelector<T, U, V>(Func<T, U, V> resultSelector, Maybe<T> source)
-            where T : class
-            where U : class
-            where V : class
-        {
-            return u => resultSelector(source.Value, u);
+            return FlatMap(source, maybeSelector, resultSelector);
         }
 
         /// <summary>
@@ -312,7 +312,7 @@ namespace CSharp.James
         }
 
         /// <summary>
-        /// If present, returns the value of <paramref name="maybe"/>; otherwise <paramref name="fallback"/>
+        /// If present, returns the value of <paramref name="maybe"/>; otherwise <paramref name="else"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="maybe"></param>
@@ -364,10 +364,23 @@ namespace CSharp.James
         /// <param name="sequence"></param>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public static Maybe<T> FirstAsMaybe<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
+        public static Maybe<T> FirstMaybe<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
             where T : class
         {
             return sequence.FirstOrDefault(predicate);
+        }
+
+        /// <summary>
+        /// Returns teh first element of <paramref name="sequence"/> as an instance of Maybe. 
+        /// If no such element exists, Maybe.None.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sequence"></param>
+        /// <returns></returns>
+        public static Maybe<T> FirstMaybe<T>(this IEnumerable<T> sequence)
+            where T : class
+        {
+            return sequence.FirstOrDefault();
         }
 
     }

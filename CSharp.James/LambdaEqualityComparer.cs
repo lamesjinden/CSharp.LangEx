@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace CSharp.James
+namespace PlayWell.Core
 {
 
     public interface IFluentEqualityComparerBuilder<T> 

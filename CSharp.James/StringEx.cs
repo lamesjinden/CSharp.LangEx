@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace CSharp.James
+namespace PlayWell.Core
 {
 
     public static class StringEx
@@ -16,7 +13,7 @@ namespace CSharp.James
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static string Maybe(this string str)
+        public static string OrEmpty(this string str)
         {
             return str ?? string.Empty;
         }
