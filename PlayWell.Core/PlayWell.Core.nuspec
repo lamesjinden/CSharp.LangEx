@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
+    <id>PlayWell</id>
     <version>$version$</version>
     <title>PlayWell</title>
     <authors>James Linden</authors>
