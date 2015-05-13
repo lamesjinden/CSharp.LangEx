@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DictionaryExTests.cs" />
     <Compile Include="EitherTests.cs" />
     <Compile Include="EnumerableExTests.cs" />
     <Compile Include="FnExTests.cs" />

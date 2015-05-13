@@ -54,7 +54,7 @@ namespace PlayWell.Core
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static IDictionary<K, V> RemoveAnd<K, V>(this IDictionary<K, V> source, K key, V value)
+        public static IDictionary<K, V> RemoveAnd<K, V>(this IDictionary<K, V> source, K key)
         {
             source.Remove(key);
             return source;
@@ -68,9 +68,12 @@ namespace PlayWell.Core
         /// <param name="source"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static V Get<K, V>(this IDictionary<K, V> source, K key)
+        public static Maybe<V> Get<K, V>(this IDictionary<K, V> source, K key) where V : class
         {
-            return source[key];
+            V val;
+            return source.TryGetValue(key, out val)
+                ? val
+                : Maybe<V>.None;
         }
 
         /// <summary>

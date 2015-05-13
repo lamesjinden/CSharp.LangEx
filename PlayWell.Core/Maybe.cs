@@ -170,25 +170,6 @@ namespace PlayWell.Core
         }
 
         /// <summary>
-        /// Monadic Bind for Maybe with an addition projection
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="U"></typeparam>
-        /// <typeparam name="V"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="maybeSelector"></param>
-        /// <param name="resultSelector"></param>
-        /// <returns></returns>
-        public static Maybe<V> FlatMap<T, U, V>(this Maybe<T> source, Func<T, Maybe<U>> maybeSelector, Func<T, U, V> resultSelector)
-            where T : class
-            where U : class
-            where V : class
-        {
-            var maybeInter = FlatMap(source, maybeSelector);
-            return FlatMap(maybeInter, AdaptResultSelector(resultSelector, source));
-        }
-
-        /// <summary>
         /// Adapt <paramref name="resultSelector"/> to signature of projector of SelectMaybe
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -281,7 +262,8 @@ namespace PlayWell.Core
             where U : class 
             where V : class
         {
-            return FlatMap(source, maybeSelector, resultSelector);
+            var maybeInter = FlatMap(source, maybeSelector);
+            return FlatMap(maybeInter, AdaptResultSelector(resultSelector, source));
         }
 
         /// <summary>

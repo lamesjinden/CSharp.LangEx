@@ -158,7 +158,7 @@ namespace PlayWell.Core
         /// <param name="action"></param>
         public static void IfNotNull<T>(this T arg, Action<T> action) where T : class
         {
-            arg.ApplyIf(arg != null, action);
+            arg.ApplyIf(!object.ReferenceEquals(arg, null), action);
         }
 
         /// <summary>
@@ -174,9 +174,9 @@ namespace PlayWell.Core
         /// if and only if <paramref name="arg"/> is not a null reference;
         /// else the default value for <paramref name="U"/>
         /// </returns>
-        public static U IfNotNull<T, U>(this T arg, Func<T, U> func) where T : class 
+        public static U IfNotNull<T, U>(this T arg, Func<T, U> func) where T : class where U : class 
         {
-            return arg.ApplyIf(arg != null, func);
+            return arg.ApplyIf(!object.ReferenceEquals(arg, null), func);
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace PlayWell.Core
         /// </returns>
         public static U IfNotNull<T, U>(this T arg, Func<T, U> func, U fallback) where T : class
         {
-            return arg.ApplyIf(arg != null, func, fallback);
+            return arg.ApplyIf(!object.ReferenceEquals(arg, null), func, fallback);
         }
 
         /// <summary>

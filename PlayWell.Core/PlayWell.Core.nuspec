@@ -6,10 +6,10 @@
     <title>PlayWell</title>
     <authors>James Linden</authors>
     <owners>James Linden</owners>
-    <description>PlayWell.Core</description>
+    <description>Providing foundational building blocks for describing programs with expressions, without sacrificing type safety. Also, Monads</description>
     <projectUrl>https://github.com/lamesjinden/PlayWell</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <releaseNotes>Initial Release</releaseNotes>
+    <releaseNotes>Breaking modifications and out-right removals. Additional extension methods on Enumerable. Additional unit tests.</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags></tags>
   </metadata>

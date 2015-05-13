@@ -51,7 +51,7 @@ namespace PlayWell.Core
         /// Returns <paramref name="t"/> if and only if 
         /// <paramref name="t"/> is not a null reference
         /// </returns>
-        public static T ThrowIfNull<T>(this T t, string paramName = null, string message = null) where T : class
+        public static T ThrowIfNull<T>(this T t, string paramName, string message) where T : class
         {
             if (t == null) throw new ArgumentNullException(paramName, message);
             return t;

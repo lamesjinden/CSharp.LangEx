@@ -9,6 +9,17 @@ namespace PlayWell.Core
     {
 
         /// <summary>
+        /// Places <paramref name="value"/> into an IEnumerable of T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> Lift<T>(this T value)
+        {
+            return new T[] {value};
+        }
+
+        /// <summary>
         /// Returns <paramref name="source"/> or, if null, Enumerable.Empty of T
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -37,17 +48,6 @@ namespace PlayWell.Core
         /// <param name="source"></param>
         /// <returns></returns>
         public static T[] OrEmpty<T>(this T[] source)
-        {
-            return source ?? new T[0];
-        }
-
-        /// <summary>
-        /// Returns <paramref name="source"/> or, if null, a new empty array of T
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static T[] Maybe<T>(this T[] source)
         {
             return source ?? new T[0];
         }
@@ -114,6 +114,56 @@ namespace PlayWell.Core
         public static IEnumerable<T> WhereMany<T>(this IEnumerable<T> source, params Func<T, bool>[] predicates)
         {
             return predicates.Aggregate(source, (seq, pred) => seq.Where(pred));
+        }
+
+        /// <summary>
+        /// Checks whether <paramref name="source"/> is in <paramref name="items"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public static bool In<T>(this T source, params T[] items)
+        {
+            return items.Contains(source);
+        }
+
+        /// <summary>
+        /// Checks whether <paramref name="source"/> is in <paramref name="items"/>, using the provided <paramref name="comparer"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="comparer"></param>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public static bool In<T>(this T source, IEqualityComparer<T> comparer, params T[] items)
+        {
+            return items.Contains(source, comparer);
+        }
+
+        /// <summary>
+        /// Checks whether <paramref name="source"/> is in <paramref name="items"/>. This operation is backed by a HashSet.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public static bool InSet<T>(this T source, params T[] items)
+        {
+            return new HashSet<T>(items).Contains(source);
+        }
+
+        /// <summary>
+        /// Checks whether <paramref name="source"/> is in <paramref name="items"/>, using the provided <paramref name="comparer"/>. This operation is backed by a HashSet.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="comparer"></param>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public static bool InSet<T>(this T source, IEqualityComparer<T> comparer, params T[] items)
+        {
+            return new HashSet<T>(comparer).Contains(source);
         }
 
     }
