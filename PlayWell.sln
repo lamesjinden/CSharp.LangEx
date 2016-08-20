@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B66F6BA6-7FA8-4B3F-B69D-639D57EB8F77}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,6 +13,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayWell.Core", "PlayWell.Core\PlayWell.Core.csproj", "{79BEFD8B-0DFD-4DB0-81D3-9B934657A686}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayWell.Core.Tests", "PlayWell.Core.Tests\PlayWell.Core.Tests.csproj", "{82B57CE0-0C9D-4C13-AC38-E8837AED3BB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playwell.Messaging", "Playwell.Messaging\Playwell.Messaging.csproj", "{FFDD6DA3-EE81-4E59-8203-B09F8A8EDF55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playwell.Messaging.Tests", "Playwell.Messaging.Tests\Playwell.Messaging.Tests.csproj", "{2262CFB4-FD99-419C-8AD2-868F00F5906A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,6 +32,14 @@ Global
 		{82B57CE0-0C9D-4C13-AC38-E8837AED3BB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82B57CE0-0C9D-4C13-AC38-E8837AED3BB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82B57CE0-0C9D-4C13-AC38-E8837AED3BB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFDD6DA3-EE81-4E59-8203-B09F8A8EDF55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFDD6DA3-EE81-4E59-8203-B09F8A8EDF55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFDD6DA3-EE81-4E59-8203-B09F8A8EDF55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFDD6DA3-EE81-4E59-8203-B09F8A8EDF55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2262CFB4-FD99-419C-8AD2-868F00F5906A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2262CFB4-FD99-419C-8AD2-868F00F5906A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2262CFB4-FD99-419C-8AD2-868F00F5906A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2262CFB4-FD99-419C-8AD2-868F00F5906A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
