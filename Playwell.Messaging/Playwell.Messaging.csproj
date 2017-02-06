@@ -39,8 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actor.cs" />
+    <Compile Include="BlockingCollectionChannel.cs" />
+    <Compile Include="Router.cs" />
+    <Compile Include="IActor.cs" />
+    <Compile Include="IChannel.cs" />
+    <Compile Include="Message.cs" />
     <Compile Include="ThreadBackedAgent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MessagingEx.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlayWell.Core\PlayWell.Core.csproj">
